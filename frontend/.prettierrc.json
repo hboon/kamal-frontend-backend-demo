@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "endOfLine": "lf",
+  "printWidth": 100,
+  "semi": false,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "importOrder": [
+    "^vue",
+    "^vue-?(|router|x)(/.*)?$",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@/components/ui/(.*)$",
+    "^@/components/(.*)$",
+    "",
+    "^(@|~)/(.*)$",
+    "",
+    "^[./]"
+  ],
+  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
+  "plugins": ["@ianvs/prettier-plugin-sort-imports"]
+}

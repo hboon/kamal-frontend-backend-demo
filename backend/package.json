@@ -1,0 +1,38 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev-node": "ts-node-dev src/index.ts",
+    "dev-bun": "bun --watch src/index.ts",
+    "dev": "pnpm run dev-bun",
+    "format": "prettier --write src/",
+    "start-node": "ncc run src/index.ts",
+    "start-bun": "bun src/index.ts",
+    "start": "pnpm run start-bun"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/awilix": "^5.1.0",
+    "@fastify/cors": "^9.0.1",
+    "@vercel/ncc": "^0.38.1",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.28.1",
+    "fastify-raw-body": "^4.3.0",
+    "pino": "^9.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+    "@types/node": "^20.14.11",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.16.5",
+    "typescript": "^5.6.2"
+  }
+}
