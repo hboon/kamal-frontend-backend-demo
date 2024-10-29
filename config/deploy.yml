@@ -1,0 +1,72 @@
+<% require "dotenv"; Dotenv.load("backend/.env-prod") %>
+
+service: <%= ENV['SERVICE_NAME'] %>
+image: <%= ENV['DOCKER_USERNAME'] %>/<%= ENV['DOCKER_IMAGE_NAME'] %>
+servers:
+  web:
+    hosts:
+      - <%= ENV['HOST'] %>: frontend
+    cmd: "/app/kamal-deploy/run-frontend"
+  backend:
+    hosts:
+      - <%= ENV['HOST'] %>: backend
+    proxy:
+      "host": <%= ENV['BACKEND_DOMAIN'] %>
+      healthcheck:
+        interval: 3
+        path: /health
+        timeout: 3
+    cmd: "/app/kamal-deploy/run-backend"
+proxy: 
+  ssl: true
+  host: <%= ENV['FRONTEND_DOMAIN'] %>
+ssh:
+  user: kamal
+registry:
+  username: <%= ENV['DOCKER_USERNAME'] %>
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+builder:
+  arch: amd64
+  #arch: arm64
+deploy_timeout: 240
+
+env:
+  tags:
+    frontend:
+      secret:
+        - VITE_GIT_COMMIT
+        - VITE_BACKEND_HOST
+        - DB_USER
+        - DB_DATABASE
+    backend:
+      clear:
+        PORT: 80
+        NODE_ENV: <%= ENV['NODE_ENV'] %>
+        LOG_LEVEL: <%= ENV['LOG_LEVEL'] %>
+        DISABLE_JOBS: false
+      secret:
+        - GIT_COMMIT
+        - DB_USER
+        - DB_DATABASE
+        - DB_PASSWORD
+        - DB_HOST
+        - FRONTEND_HOSTNAME
+
+accessories:
+  db:
+    image: postgres:14
+    # Cannot share across Kamal projects. Just doesn't work well/correctly
+    #service: shared-database
+    host: <%= ENV['HOST'] %>
+    port: 5432
+    env:
+      clear:
+        POSTGRES_HOST_AUTH_METHOD: password
+        POSTGRES_HOST: <%= ENV['HOST'] %>
+      secret:
+        - POSTGRES_USER
+        - POSTGRES_DB # The database will be created automatically on first boot. If the mounted volume already exists, the database wouldn't be created
+        - POSTGRES_PASSWORD
+    volumes:
+      - "/psql/14/main:/var/lib/postgresql/data"

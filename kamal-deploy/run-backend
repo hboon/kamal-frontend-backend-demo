@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+cd /app/backend
+/usr/local/bin/pnpm i
+#/usr/local/bin/pnpm run build #not need this because bun
+/usr/local/bin/pnpm run start

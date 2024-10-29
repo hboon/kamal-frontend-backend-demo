@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+cd /app/frontend
+yes y | /usr/local/bin/pnpm i
+/usr/local/bin/pnpm run build-only
+/usr/bin/caddy run --config /app/kamal-deploy/Caddyfile
